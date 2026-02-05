@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h3>Traceability Explorer</h3>
+        <form method="GET" class="d-flex gap-2">
+            <input type="text" name="q" class="form-control" placeholder="Enter SGTIN, LGTIN, or SSCC..." value="{{ query }}">
+            <button type="submit" class="btn btn-primary">Trace</button>
+        </form>
+    </div>
+</div>
+
+{% if tree %}
+<div class="card shadow">
+    <div class="card-header bg-dark text-white">
+        Hierarchy View
+    </div>
+    <div class="card-body">
+        
+        {% macro render_node(node) %}
+            <li class="list-group-item">
+                <div class="d-flex align-items-center">
+                    {% if node.children %}
+                        <span class="badge bg-warning text-dark me-2">Container</span>
+                    {% else %}
+                        <span class="badge bg-success me-2">Item</span>
+                    {% endif %}
+                    
+                    <strong>{{ node.epc }}</strong>
+                    <span class="ms-auto text-muted small">{{ node.status }}</span>
+                </div>
+
+                {% if node.children %}
+                    <ul class="list-group mt-2 ms-4 border-start">
+                        {% for child in node.children %}
+                            {{ render_node(child) }}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endmacro %}
+
+        <ul class="list-group list-group-flush">
+            {{ render_node(tree) }}
+        </ul>
+
+    </div>
+</div>
+{% endif %}
+{% endblock %}

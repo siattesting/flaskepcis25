@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-primary text-white">Add New Product</div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="e.g. ChocoBar 50g" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">GTIN (14 Digits)</label>
+                        <input type="text" name="gtin" class="form-control" placeholder="01234567891234" minlength="14" maxlength="14" required>
+                        <div class="form-text">Must match the Line Controller settings.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Internal SKU</label>
+                        <input type="text" name="sku" class="form-control" placeholder="CHOCO-001">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Save Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">Product Master Data</div>
+            <div class="card-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>GTIN</th>
+                            <th>SKU</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in products %}
+                        <tr>
+                            <td><strong>{{ p.name }}</strong></td>
+                            <td><span class="badge bg-secondary">{{ p.gtin }}</span></td>
+                            <td>{{ p.sku }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">No products found. Add one!</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

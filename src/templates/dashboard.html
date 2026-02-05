@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="mb-4">Factory Status</h2>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Products</h5>
+                <p class="display-4">{{ product_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Captured Events</h5>
+                <p class="display-4">{{ event_count }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Recent Activity</div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                    <th>Business Step</th>
+                    <th>Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr>
+                    <td>{{ event.event_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td><span class="badge bg-secondary">{{ event.event_type }}</span></td>
+                    <td>
+                        {% if event.action == 'ADD' %}
+                            <span class="badge bg-success">ADD</span>
+                        {% elif event.action == 'DELETE' %}
+                            <span class="badge bg-danger">DELETE</span>
+                        {% else %}
+                            <span class="badge bg-primary">{{ event.action }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ event.biz_step or '-' }}</td>
+                    <td>{{ event.biz_location or '-' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No events found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
